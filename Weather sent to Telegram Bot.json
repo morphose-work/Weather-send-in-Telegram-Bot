@@ -1,0 +1,103 @@
+{
+  "name": "Weather sent to Telegram Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "cityName": "London",
+        "language": "ru"
+      },
+      "type": "n8n-nodes-base.openWeatherMap",
+      "typeVersion": 1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "a2bc7b73-dbb4-4b7d-9944-42c011aa4abe",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "UtjE2xu5PWrD64Zy",
+          "name": "OpenWeatherMapAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "",
+        "text": "=🏙Погода в городе Лондон: {{ $json.weather[0].description }}\n\n🌡Температура: {{ Math.round($json.main.temp) }}°C\n🤔 Ощущается как: {{ Math.round($json.main.feels_like) }}°C\n\n💨 Ветер: {{ $json.wind.speed }} м/с\n💧 Влажность: {{ $json.main.humidity }}%",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        0
+      ],
+      "id": "a9d521ee-9842-4513-8e2c-f46172c1da8d",
+      "name": "Send a text message",
+      "webhookId": "54526ff0-d993-4a20-8dc2-50fddc7ab8f2",
+      "credentials": {
+        "telegramApi": {
+          "id": "TawvZb2M81P722Ft",
+          "name": "Weather Lviv Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "836c82e4-3841-402d-9357-47ba44d3c084",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenWeatherMap": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5ef2405e-726f-41f8-8d4c-481cd32e2b3c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a552b5d731a2187808c38eaf3f801f5f51b5253e16ca7b0ff9b2893b399da95a"
+  },
+  "id": "gYwQ5nej9881aT7v",
+  "tags": []
+}
